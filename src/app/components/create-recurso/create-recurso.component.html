@@ -27,7 +27,7 @@
         <span>Lista de Recursos</span>
     </mat-toolbar>
 </p> 
-<mat-progress-bar  mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<mat-progress-bar  mode="indeterminate"   color="warn" *ngIf="loading"></mat-progress-bar>
 <body>
     <table id="customers">
       <tr>
@@ -46,7 +46,7 @@
             
             <td>
                 <button mat-icon-button color="secondary" (click)="edit(Recurso.idRecurso)">
-                    <mat-icon>settings</mat-icon>
+                    <mat-icon>create</mat-icon>
                 </button>
             </td>
             <td>

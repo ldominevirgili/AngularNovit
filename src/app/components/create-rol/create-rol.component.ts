@@ -13,14 +13,14 @@ export class CreateRolComponent implements OnInit {
   formValues: FormGroup;
   loading: boolean = true;
   constructor(
-        fb: FormBuilder,
-        private RolService: RolService
-    ) {
+    fb: FormBuilder,
+    private RolService: RolService
+  ) {
     this.formValues = fb.group({
       idRol: [0, Validators.required],
       nombre: ['', Validators.required],
       estado: [false],
-      
+
     });
   }
 
@@ -32,35 +32,37 @@ export class CreateRolComponent implements OnInit {
   }
 
   delete(idRol: number) {
-    console.log('Libero el usuario', idRol);
-    this.RolService.deleteRol(idRol).subscribe({next: () => {
-      this.getAllRols();
-    },
-    error: (error: { status: number; }) => {
-      if (error.status === 401){
-        window.alert('Error de autenticación con el servidor.');
+    console.log('Libero el rol', idRol);
+    this.RolService.deleteRol(idRol).subscribe({
+      next: () => {
+        this.loading=true;
+        this.getAllRols();
+        window.alert('Libero el rol');
+      },
+      error: (error: { status: number; }) => {
+        if (error.status === 401) {
+          window.alert('Error de autenticación con el servidor.');
+        }
+        else if (error.status === 400) {
+          window.alert('Error de parametros incorrectos.');
+        }
+        else
+          window.alert('Error desconocido.');
       }
-      else if (error.status === 400)
-      {
-        window.alert('Error de parametros incorrectos.');
-      }
-      else
-        window.alert('Error desconocido.');
-    }
-  })
+    })
   }
 
   edit(idRol: number) {
     console.log('Modifico el rol', idRol);
 
-   
+ 
     this.isEditing = true;
 
-  
+
     let Rol = this.RolList.find((r: any) => r.idRol === idRol);
 
-    
-    
+
+
     this.formValues.controls['idRol'].setValue(Rol.idRol);
     this.formValues.controls['nombre'].setValue(Rol.nombre);
     this.formValues.controls['estado'].setValue(Rol.estado);
@@ -74,21 +76,20 @@ export class CreateRolComponent implements OnInit {
       nRol.idRol = this.formValues.get('idRol')?.value;
       nRol.nombre = this.formValues.get('nombre')?.value;
       nRol.estado = this.formValues.get('estado')?.value;
-      
 
 
-      if (nRol.idRol != 0)
-      {
+
+      if (nRol.idRol != 0) {
         this.RolService.updateRol(nRol).subscribe({
           next: () => {
+            this.loading=true;
             this.getAllRols();
           },
           error: (error: { status: number; }) => {
-            if (error.status === 401){
+            if (error.status === 401) {
               window.alert('Error de autenticación con el servidor.');
             }
-            else if (error.status === 400)
-            {
+            else if (error.status === 400) {
               window.alert('Error de parametros incorrectos.');
             }
             else
@@ -96,32 +97,34 @@ export class CreateRolComponent implements OnInit {
           }
         });
       }
-      else{
-        let rolNuevo= {
+      else {
+        let rolNuevo = {
           idRol: this.formValues.get('idRol')?.value,
           nombre: this.formValues.get('nombre')?.value,
           estado: this.formValues.get('estado')?.value
         }
         this.RolService.createRol(rolNuevo).subscribe({
           next: later => {
+            this.loading=true;
             this.getAllRols();
           },
           error: error => {
-            if (error.status === 401){
+            if (error.status === 401) {
               window.alert('Error de autenticación con el servidor.');
             }
-            else if (error.status === 400)
-            {
+            else if (error.status === 400) {
               window.alert('Error de parametros incorrectos.');
             }
             else
               window.alert('Error desconocido.');
           }
         });
+
       }
 
       this.isEditing = false;
       this.formValues.reset({});
+      console.log(this.formValues.touched)
 
     } else
       window.alert('Debe completar todos los campos');
@@ -132,9 +135,11 @@ export class CreateRolComponent implements OnInit {
     this.formValues.reset();
   }
 
-  getAllRols(){
+  getAllRols() {
     this.RolService.getRol().subscribe(
-      Rol => this.RolList = Rol
-    );
+      Rol => {
+        this.RolList = Rol;
+        this.loading=false
+      });
   }
 }

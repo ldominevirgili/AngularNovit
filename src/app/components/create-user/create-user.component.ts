@@ -40,7 +40,9 @@ export class CreateUserComponent implements OnInit {
     console.log('Libero el usuario', idUsuario);
     this.UsuarioService.delete(idUsuario).subscribe({
       next: () => {
+        this.loading = true;
         this.getAllUsuarios();
+        window.alert('Libero el usuario');
       },
       error: (error: { status: number; }) => {
         if (error.status === 401) {
@@ -61,7 +63,6 @@ export class CreateUserComponent implements OnInit {
   edit(idUsuario: number) {
     console.log('Modifico el Usuario', idUsuario);
 
-
     this.isEditing = true;
 
 
@@ -76,6 +77,7 @@ export class CreateUserComponent implements OnInit {
     this.formValues.controls['password'].setValue(Usuario.password);
     this.formValues.controls['email'].setValue(Usuario.email);
     this.formValues.controls['estado'].setValue(Usuario.estado);
+
   }
 
   submit() {
@@ -92,6 +94,7 @@ export class CreateUserComponent implements OnInit {
       if (aUsuario.idUsuario != 0) {
         this.UsuarioService.updateUsuario(aUsuario).subscribe({
           next: later => {
+            this.loading = true;
             this.getAllUsuarios();
           },
           error: error => {
@@ -118,6 +121,7 @@ export class CreateUserComponent implements OnInit {
         }
         this.UsuarioService.createUsuario(usuarioNuevo).subscribe({
           next: later => {
+            this.loading = true;
             this.getAllUsuarios();
           },
           error: error => {
@@ -147,7 +151,9 @@ export class CreateUserComponent implements OnInit {
 
   getAllUsuarios() {
     this.UsuarioService.getUsuario().subscribe(
-      Usuario => this.UsuarioList = Usuario
-    );
+      Usuario => {
+        this.UsuarioList = Usuario;
+        this.loading = false
+      });
   }
 }

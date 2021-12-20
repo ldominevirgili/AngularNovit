@@ -15,14 +15,14 @@ export class CreateRecursoComponent implements OnInit {
   loading: boolean = true;
 
   constructor(
-        fb: FormBuilder,
-        private RecursoService: RecursoService
-    ) {
+    fb: FormBuilder,
+    private RecursoService: RecursoService
+  ) {
     this.formValues = fb.group({
       idRecurso: [0, Validators.required],
       nombre: ['', Validators.required],
       estado: [''],
-      
+
     });
   }
 
@@ -33,38 +33,40 @@ export class CreateRecursoComponent implements OnInit {
     this.getAllRecursos();
   }
 
-  
+
   delete(idRecurso: number) {
-    console.log('Libero el rol', idRecurso);
-    this.RecursoService.delete(idRecurso).subscribe({next: () => {
-      this.getAllRecursos();
-    },
-    error: (error: { status: number; }) => {
-      if (error.status === 401){
-        window.alert('Error de autenticación con el servidor.');
+    console.log('Libero el recurso', idRecurso);
+    this.RecursoService.delete(idRecurso).subscribe({
+      next: () => {
+        this.loading = true;
+        this.getAllRecursos();
+        window.alert('Libero el recurso')
+      },
+      error: (error: { status: number; }) => {
+        if (error.status === 401) {
+          window.alert('Error de autenticación con el servidor.');
+        }
+        else if (error.status === 400) {
+          window.alert('Error de parametros incorrectos.');
+        }
+        else
+          window.alert('Error desconocido.');
       }
-      else if (error.status === 400)
-      {
-        window.alert('Error de parametros incorrectos.');
-      }
-      else
-        window.alert('Error desconocido.');
-    }
-  })
+    })
   }
 
 
   edit(idRecurso: number) {
     console.log('Modifico el recurso ', idRecurso);
 
-   
+
     this.isEditing = true;
 
-  
+
     let Recurso = this.RecursoList.find((r: any) => r.idRecurso === idRecurso);
 
-    
-    
+
+
     this.formValues.controls['idRecurso'].setValue(Recurso.idRecurso);
     this.formValues.controls['nombre'].setValue(Recurso.nombre);
     this.formValues.controls['estado'].setValue(Recurso.estado);
@@ -79,18 +81,19 @@ export class CreateRecursoComponent implements OnInit {
       nRecurso.estado = this.formValues.get('estado')?.value;
       
 
-      if (nRecurso.idRecurso != 0)
-      {
+      if (nRecurso.idRecurso != 0) {
         this.RecursoService.updateRecurso(nRecurso).subscribe({
           next: () => {
+            this.loading = true;
             this.getAllRecursos();
+            
           },
+
           error: (error: { status: number; }) => {
-            if (error.status === 401){
+            if (error.status === 401) {
               window.alert('Error de autenticación con el servidor.');
             }
-            else if (error.status === 400)
-            {
+            else if (error.status === 400) {
               window.alert('Error de parametros incorrectos.');
             }
             else
@@ -98,22 +101,22 @@ export class CreateRecursoComponent implements OnInit {
           }
         });
       }
-      else{
-        let recursoNuevo= {
+      else {
+        let recursoNuevo = {
           idRecurso: this.formValues.get('idRecurso')?.value,
           nombre: this.formValues.get('nombre')?.value,
           estado: this.formValues.get('estado')?.value
         }
         this.RecursoService.createRecurso(recursoNuevo).subscribe({
           next: later => {
+            this.loading = true;
             this.getAllRecursos();
           },
           error: error => {
-            if (error.status === 401){
+            if (error.status === 401) {
               window.alert('Error de autenticación con el servidor.');
             }
-            else if (error.status === 400)
-            {
+            else if (error.status === 400) {
               window.alert('Error de parametros incorrectos.');
             }
             else
@@ -122,10 +125,11 @@ export class CreateRecursoComponent implements OnInit {
         });
       }
       this.isEditing = false;
-      this.formValues.reset({});
+     
 
     } else
       window.alert('Debe completar todos los campos');
+      this.formValues.reset();
   }
 
   cancelEdit() {
@@ -133,11 +137,11 @@ export class CreateRecursoComponent implements OnInit {
     this.formValues.reset();
   }
 
-  getAllRecursos(){
+  getAllRecursos() {
     this.RecursoService.getRecurso().subscribe(
-      Recurso =>{ 
+      Recurso => {
         this.RecursoList = Recurso;
-       //this.loading=false
+        this.loading = false
       });
   }
 }
