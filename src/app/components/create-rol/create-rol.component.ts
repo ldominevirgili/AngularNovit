@@ -11,7 +11,7 @@ import { RolService } from 'src/app/services/rol.service';
 export class CreateRolComponent implements OnInit {
 
   formValues: FormGroup;
-
+  loading: boolean = true;
   constructor(
         fb: FormBuilder,
         private RolService: RolService

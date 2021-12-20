@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/usuario';
-import { UsuarioService } from 'src/app/services/usuario.service'; 
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 
 @Component({
@@ -11,11 +11,12 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class CreateUserComponent implements OnInit {
   formValues: FormGroup;
+  loading: boolean = true;
 
   constructor(
-        fb: FormBuilder,
-        private UsuarioService: UsuarioService
-    ) {
+    fb: FormBuilder,
+    private UsuarioService: UsuarioService
+  ) {
     this.formValues = fb.group({
       idUsuario: [0, Validators.required],
       nombre: ['', Validators.required],
@@ -24,7 +25,7 @@ export class CreateUserComponent implements OnInit {
       password: ['', Validators.required],
       email: ['', Validators.required],
       estado: [''],
-      
+
     });
   }
 
@@ -37,37 +38,37 @@ export class CreateUserComponent implements OnInit {
 
   delete(idUsuario: number): void {
     console.log('Libero el usuario', idUsuario);
-    this.UsuarioService.delete(idUsuario).subscribe({next: () => {
-      this.getAllUsuarios();
-    },
-    error: (error: { status: number; }) => {
-      if (error.status === 401){
-        window.alert('Error de autenticación con el servidor.');
+    this.UsuarioService.delete(idUsuario).subscribe({
+      next: () => {
+        this.getAllUsuarios();
+      },
+      error: (error: { status: number; }) => {
+        if (error.status === 401) {
+          window.alert('Error de autenticación con el servidor.');
+        }
+        else if (error.status === 400) {
+          window.alert('Error de parametros incorrectos.');
+        }
+        else {
+          window.alert('Error desconocido.');
+          console.log(error)
+        }
       }
-      else if (error.status === 400)
-      {
-        window.alert('Error de parametros incorrectos.');
-      }
-      else{
-        window.alert('Error desconocido.');
-        console.log(error)
-      }
-    }
-  })
+    })
   }
 
 
   edit(idUsuario: number) {
     console.log('Modifico el Usuario', idUsuario);
 
-   
+
     this.isEditing = true;
 
-  
+
     let Usuario = this.UsuarioList.find((u: any) => u.idUsuario === idUsuario);
 
-    
-    
+
+
     this.formValues.controls['idUsuario'].setValue(Usuario.idUsuario);
     this.formValues.controls['nombre'].setValue(Usuario.nombre);
     this.formValues.controls['apellido'].setValue(Usuario.apellido);
@@ -88,18 +89,16 @@ export class CreateUserComponent implements OnInit {
       aUsuario.password = this.formValues.get('password')?.value;
       aUsuario.email = this.formValues.get('email')?.value;
 
-      if (aUsuario.idUsuario != 0)
-      {
+      if (aUsuario.idUsuario != 0) {
         this.UsuarioService.updateUsuario(aUsuario).subscribe({
           next: later => {
             this.getAllUsuarios();
           },
           error: error => {
-            if (error.status === 401){
+            if (error.status === 401) {
               window.alert('Error de autenticación con el servidor.');
             }
-            else if (error.status === 400)
-            {
+            else if (error.status === 400) {
               window.alert('Error de parametros incorrectos.');
             }
             else
@@ -107,8 +106,8 @@ export class CreateUserComponent implements OnInit {
           }
         });
       }
-      else{
-        let usuarioNuevo= {
+      else {
+        let usuarioNuevo = {
           idUsuario: this.formValues.get('idUsuario')?.value,
           nombre: this.formValues.get('nombre')?.value,
           apellido: this.formValues.get('apellido')?.value,
@@ -122,11 +121,10 @@ export class CreateUserComponent implements OnInit {
             this.getAllUsuarios();
           },
           error: error => {
-            if (error.status === 401){
+            if (error.status === 401) {
               window.alert('Error de autenticación con el servidor.');
             }
-            else if (error.status === 400)
-            {
+            else if (error.status === 400) {
               window.alert('Error de parametros incorrectos.');
             }
             else
@@ -147,7 +145,7 @@ export class CreateUserComponent implements OnInit {
     this.formValues.reset();
   }
 
-  getAllUsuarios(){
+  getAllUsuarios() {
     this.UsuarioService.getUsuario().subscribe(
       Usuario => this.UsuarioList = Usuario
     );

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Recurso } from 'src/app/models/recurso';
 import { RecursoService } from 'src/app/services/recurso.service';
 
+
 @Component({
   selector: 'app-create-recurso',
   templateUrl: './create-recurso.component.html',
@@ -11,6 +12,7 @@ import { RecursoService } from 'src/app/services/recurso.service';
 export class CreateRecursoComponent implements OnInit {
 
   formValues: FormGroup;
+  loading: boolean = true;
 
   constructor(
         fb: FormBuilder,
@@ -133,7 +135,9 @@ export class CreateRecursoComponent implements OnInit {
 
   getAllRecursos(){
     this.RecursoService.getRecurso().subscribe(
-      Recurso => this.RecursoList = Recurso
-    );
+      Recurso =>{ 
+        this.RecursoList = Recurso;
+       //this.loading=false
+      });
   }
 }

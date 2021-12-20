@@ -27,7 +27,7 @@
         <span>Lista de Roles</span>
     </mat-toolbar>
 </p>
-
+<mat-progress-bar  mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 <body>
     <table id="customers">
       <tr>
@@ -41,7 +41,7 @@
         <tr *ngFor="let Rol of RolList">
             <td>{{Rol.idRol}}</td>
             <td>{{Rol.nombre}}</td>
-            <td>{{Rol.estado}}</td>
+            <td>{{Rol.estado | validation}}</td>
 
             
             <td>

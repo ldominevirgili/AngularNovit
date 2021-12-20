@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ValidationPipe } from './validation.pipe';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     CreateUserComponent,
     SidenavComponent,
     CreateRolComponent,
+    ValidationPipe,
   ],
   imports: [
     BrowserModule,

@@ -32,7 +32,7 @@
         <button *ngIf="!isEditing" mat-button type="submit">
             Agregar
         </button>
-        <span *ngIf="isEditing">
+        <span *ngIf="isEditing" >
             <button mat-button type="submit">Actualizar</button>
             <button color="warn" mat-button (click)="cancelEdit()">Anular</button>
         </span>
@@ -42,6 +42,7 @@
         <span>Lista de Usuarios</span>
     </mat-toolbar>
 </p>
+<mat-progress-bar  mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 <body>
 <table id="customers">
   <tr>
@@ -61,7 +62,7 @@
         <td>{{Usuario.apellido}}</td>
         <td>{{Usuario.username}}</td>
         <td>{{Usuario.email}}</td>
-        <td>{{Usuario.estado}}</td>
+        <td>{{Usuario.estado | validation}}</td>
         <td>
         <button mat-icon-button color="secondary" (click)="edit(Usuario.idUsuario)">
             <mat-icon>create</mat-icon>
