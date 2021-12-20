@@ -1,0 +1,15 @@
+
+    <section>
+        <button class="example-button-row" mat-flat-button color="primary" class="example-label" mat-button (click)="navegar('Usuario')" >Usuarios</button>
+        <button class="example-button-row" mat-flat-button color="accent" class="example-label" mat-button (click)="navegar('Roles')">Roles</button>
+        <button class="example-button-row" mat-flat-button color="warn" class="example-label" mat-button (click)="navegar('Recursos')">Recursos</button>
+      
+
+    </section> 
+
+    <app-create-user *ngIf="menuElegido === 'Usuario'" ></app-create-user>
+    <app-create-rol *ngIf="menuElegido === 'Roles'"></app-create-rol>
+    <app-create-recurso *ngIf="menuElegido === 'Recursos'" ></app-create-recurso>
+    
+
+    

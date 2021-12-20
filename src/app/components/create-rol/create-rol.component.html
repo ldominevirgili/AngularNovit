@@ -1,0 +1,61 @@
+<p>
+    <mat-toolbar>
+        <span>Crear rol</span>
+    </mat-toolbar>
+</p>
+<form [formGroup]="formValues" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+        <mat-label>Nombre del Rol </mat-label>
+        <input matInput formControlName="nombre" placeholder="Nombre del Rol" required>
+    </mat-form-field>
+    
+
+    <mat-label>Estado de Rol</mat-label>
+    <mat-checkbox formControlName='estado' class="example-margin">Habilitado</mat-checkbox>
+
+
+    <button *ngIf="!isEditing" mat-button type="submit">
+        Agregar
+    </button>
+    <span *ngIf="isEditing">
+        <button mat-button type="submit">Actualizar</button>
+        <button color="warn" mat-button (click)="cancelEdit()">Anular</button>
+    </span>
+</form>
+<p>
+    <mat-toolbar>
+        <span>Lista de Roles</span>
+    </mat-toolbar>
+</p>
+
+<body>
+    <table id="customers">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Estado</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+      <tbody>
+        <tr *ngFor="let Rol of RolList">
+            <td>{{Rol.idRol}}</td>
+            <td>{{Rol.nombre}}</td>
+            <td>{{Rol.estado}}</td>
+
+            
+            <td>
+                <button mat-icon-button color="secondary" (click)="edit(Rol.idRol)">
+                    <mat-icon>restore</mat-icon>
+                </button>
+            </td>
+            <td>
+                <button mat-icon-button color="warn" (click)="delete(Rol.idRol)">
+                    <mat-icon>delete_forever</mat-icon>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    </body>
+    

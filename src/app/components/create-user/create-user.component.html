@@ -1,0 +1,80 @@
+<p>
+    <mat-toolbar>
+        <span>Crear usuario</span>
+    </mat-toolbar>
+</p>
+<form [formGroup]="formValues" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="nombre" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido" placeholder="apellido">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" placeholder="username">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" placeholder="password">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="email">
+    </mat-form-field>
+
+        <mat-label>Estado del Usuario</mat-label>
+        <mat-checkbox formControlName = 'estado' class="example-margin">Habilitado</mat-checkbox>
+    
+
+        <button *ngIf="!isEditing" mat-button type="submit">
+            Agregar
+        </button>
+        <span *ngIf="isEditing">
+            <button mat-button type="submit">Actualizar</button>
+            <button color="warn" mat-button (click)="cancelEdit()">Anular</button>
+        </span>
+        </form>
+<p>
+    <mat-toolbar>
+        <span>Lista de Usuarios</span>
+    </mat-toolbar>
+</p>
+<body>
+<table id="customers">
+  <tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Estado</th>
+    <th>Editar</th>
+    <th>Eliminar</th>
+  </tr>
+  <tbody>
+    <tr *ngFor="let Usuario of UsuarioList">
+        <td>{{Usuario.idUsuario}}</td>
+        <td>{{Usuario.nombre}}</td>
+        <td>{{Usuario.apellido}}</td>
+        <td>{{Usuario.username}}</td>
+        <td>{{Usuario.email}}</td>
+        <td>{{Usuario.estado}}</td>
+        <td>
+        <button mat-icon-button color="secondary" (click)="edit(Usuario.idUsuario)">
+            <mat-icon>create</mat-icon>
+        </button>
+    </td>
+        <td>
+            <button mat-icon-button color="warn" (click)="delete(Usuario.idUsuario)">
+                <mat-icon>delete_forever</mat-icon>
+            </button>
+        </td>
+        
+    </tr>
+</tbody>
+</table>
+</body>
+

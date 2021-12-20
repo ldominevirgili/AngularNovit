@@ -1,0 +1,60 @@
+<p>
+    <mat-toolbar>
+        <span>Crear Recurso</span>
+    </mat-toolbar>
+</p>
+<form [formGroup]="formValues" (ngSubmit)="submit()">
+<mat-form-field appearance="outline">
+    <mat-label>Nombre del Recurso </mat-label>
+    <input matInput formControlName="nombre" placeholder="Nombre del Recurso" required>
+</mat-form-field>
+
+
+    <mat-label>Estado de Recurso</mat-label>
+    <mat-checkbox formControlName = 'estado' class="example-margin">Habilitado</mat-checkbox>
+
+
+<button *ngIf="!isEditing" mat-button type="submit">
+    Agregar
+</button>
+<span *ngIf="isEditing">
+    <button mat-button type="submit">Actualizar</button>
+    <button color="warn" mat-button (click)="cancelEdit()">Anular</button>
+</span>
+</form>
+<p>
+    <mat-toolbar>
+        <span>Lista de Recursos</span>
+    </mat-toolbar>
+</p>
+<body>
+    <table id="customers">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Estado</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+      <tbody>
+        <tr *ngFor="let Recurso of RecursoList">
+            <td>{{Recurso.idRecurso}}</td>
+            <td>{{Recurso.nombre}}</td>
+            <td>{{Recurso.estado}}</td>
+
+            
+            <td>
+                <button mat-icon-button color="secondary" (click)="edit(Recurso.idRecurso)">
+                    <mat-icon>settings</mat-icon>
+                </button>
+            </td>
+            <td>
+                <button mat-icon-button color="warn" (click)="delete(Recurso.idRecurso)">
+                    <mat-icon>delete_forever</mat-icon>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    </body>
+    
